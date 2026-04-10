@@ -7,28 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* BRAND COLORS: ORANGE & GREEN */
         :root { 
-            --p-orange: #FF8C00;    /* Vibrant Orange */
-            --dark-green: #228B22;  /* Forest Green */
+            --p-orange: #FF8C00;    
+            --dark-green: #228B22;  
             --bg: #ffffff; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; overscroll-behavior-y: contain; }
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; padding-bottom: 80px; }
         
-        /* Attractive Gradient Header */
         .header { 
             background: linear-gradient(135deg, var(--p-orange) 0%, var(--dark-green) 100%); 
-            color: white; 
-            padding: 5px 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            height: 100px; 
+            color: white; padding: 5px 15px; display: flex; justify-content: space-between; 
+            align-items: center; position: sticky; top: 0; z-index: 1000; height: 100px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
         
@@ -38,11 +29,9 @@
         .hotel-brand { text-align: center; flex-grow: 1; }
         .hotel-brand h1 { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.1; text-transform: uppercase; }
         .hotel-brand span { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #fff; display: block; }
-        .vat-main { font-size: 10px; color: #fff; opacity: 0.9; font-style: italic; display: block; margin-top: 4px; }
         
-        /* LOGO STYLING (Top Right) */
-        .header-right { height: 70px; width: 70px; display: flex; align-items: center; justify-content: center; }
-        .header-logo { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 5px; }
+        .header-right { height: 75px; width: 75px; display: flex; align-items: center; justify-content: center; }
+        .header-logo { max-height: 100%; max-width: 100%; object-fit: contain; }
 
         .nav-bar { display: flex; overflow-x: auto; padding: 15px 5px; background: #fff; position: sticky; top: 100px; z-index: 900; border-bottom: 2px solid var(--p-orange); }
         .nav-item { text-align: center; min-width: 140px; opacity: 0.5; transition: 0.2s; cursor: pointer; }
@@ -54,34 +43,22 @@
         .card { display: flex; align-items: center; background: white; border-radius: 15px; margin-bottom: 15px; padding: 12px; border: 1px solid #f2f2f2; box-shadow: 0 3px 10px rgba(0,0,0,0.04); }
         .food-img { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; margin-right: 15px; background: #eee; }
         .info .title { font-size: 18px; font-weight: 600; color: var(--dark-green); font-family: 'Noto Sans Ethiopic', sans-serif; }
-        .info .ingred { font-size: 12px; color: #777; font-style: italic; margin-top: 2px; font-family: 'Noto Sans Ethiopic', sans-serif; }
         .info .price { font-size: 17px; font-weight: 700; color: var(--p-orange); margin-top: 5px; }
         
-        /* CALL TO ORDER BUTTON */
         .call-order-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--p-orange); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 2000; display: flex; align-items: center; gap: 10px; font-size: 16px; min-width: 220px; justify-content: center; border: 2px solid white; }
-
-        #adminDashboard { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:3000; padding:10px; overflow-y: scroll; }
-        .action-btn { flex: 1; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; }
-        .table-wrapper { width: 100%; overflow-x: auto; border: 1px solid #eee; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; font-size: 13px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:4000; align-items:center; justify-content:center; }
-        .modal { background:white; padding:20px; border-radius:15px; width:90%; max-width:400px; }
-        input, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 6px; }
     </style>
 </head>
 <body>
 
 <header class="header">
     <div class="header-left">
-        <div class="menu-icon" onclick="showLogin()">☰</div>
+        <div class="menu-icon">☰</div>
         <button onclick="toggleLang()" style="border:none; background:white; color:var(--p-orange); padding:5px 8px; border-radius:15px; font-size:10px; font-weight:bold;">EN/አማ</button>
     </div>
     
     <div class="hotel-brand">
         <h1 id="displayHotelName">Dibora Juice & Burger</h1>
         <span id="menu-label">MENU</span>
-        <span class="vat-main" id="vat-text">All Price Is inclusive of VAT</span>
     </div>
 
     <div class="header-right">
@@ -91,11 +68,11 @@
 
 <nav class="nav-bar">
     <div class="nav-item active" id="cat-burger" onclick="changeCat('burger')">
-        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=300&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300">
         <span id="txt-burger">Burgers</span>
     </div>
     <div class="nav-item" id="cat-juice" onclick="changeCat('juice')">
-        <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?q=80&w=300&auto=format&fit=crop">
+        <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=300">
         <span id="txt-juice">Fresh Juice</span>
     </div>
 </nav>
@@ -106,48 +83,16 @@
     📞 <span id="callText">Call To Order</span>
 </a>
 
-<div id="adminDashboard">
-    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--dark-green); padding:15px; color:white;">
-        <h3>DIBORA MANAGER</h3>
-        <button onclick="closeAdmin()" style="color:white; border:none; background:none; font-size:30px;">×</button>
-    </div>
-    <div style="padding: 20px; text-align: center;">
-        <p>Database is currently in Local Mode.</p>
-        <button class="action-btn" style="background:#27ae60; margin-top:10px; width:100%;" onclick="openAddModal()">➕ ADD NEW ITEM</button>
-    </div>
-    <div class="table-wrapper">
-        <table>
-            <thead><tr><th>EN Name</th><th>AM Name</th><th>Price</th><th>Action</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
-</div>
-
-<div id="addModal" class="overlay"><div class="modal">
-    <h3>New Item</h3>
-    <select id="newCat"><option value="burger">Burgers</option><option value="juice">Juice</option></select>
-    <input type="text" id="newEn" placeholder="English Name">
-    <input type="text" id="newAm" placeholder="Amharic Name">
-    <input type="number" id="newPrice" placeholder="Price">
-    <button onclick="submitNewItem()" style="width:100%; padding:15px; background:#27ae60; color:white; border:none; border-radius:8px; margin-top:10px;">ADD ITEM</button>
-    <button onclick="closeAddModal()" style="width:100%; border:none; background:none; color:red; margin-top:10px;">Cancel</button>
-</div></div>
-
-<div id="loginOverlay" class="overlay"><div class="modal" style="text-align:center;">
-    <h3>STAFF LOGIN</h3>
-    <input type="text" id="userInput" placeholder="User">
-    <input type="password" id="passInput" placeholder="Pass">
-    <button onclick="handleLogin()" style="width:100%; padding:12px; background:var(--dark-green); color:white; border:none; border-radius:8px; margin-top:10px;">LOGIN</button>
-    <button onclick="hideLogin()" style="width:100%; border:none; background:none; color:gray; margin-top:10px;">Cancel</button>
-</div></div>
-
 <script>
     let currentLang = 'en', currentCat = 'burger';
 
-    // LOCAL DATA - Add your items here
-    let data = [
-        { id: 1, cat: 'burger', en: 'Beef Burger', am: 'የከብት ስጋ በርገር', price: '250', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300' },
-        { id: 2, cat: 'juice', en: 'Mango Juice', am: 'የማንጎ ጁስ', price: '100', img: 'https://images.unsplash.com/photo-1546173159-315724a9d86a?w=300' }
+    // RESTORED FOOD LIST DATA
+    const data = [
+        { id: 1, cat: 'burger', en: 'Cheese Burger', am: 'ቺዝ በርገር', price: '280', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400' },
+        { id: 2, cat: 'burger', en: 'Special Dibora Burger', am: 'ልዩ ዲቦራ በርገር', price: '380', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400' },
+        { id: 3, cat: 'juice', en: 'Avocado Juice', am: 'አቮካዶ ጁስ', price: '120', img: 'https://images.unsplash.com/photo-1628556747901-5e1a8e19df3f?w=400' },
+        { id: 4, cat: 'juice', en: 'Mango Juice', am: 'የማንጎ ጁስ', price: '110', img: 'https://images.unsplash.com/photo-1546173159-315724a9d86a?w=400' },
+        { id: 5, cat: 'juice', en: 'Mixed Juice', am: 'ሚክስ ጁስ', price: '140', img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400' }
     ];
 
     function render() {
@@ -159,7 +104,6 @@
         document.getElementById('menu-label').innerText = isEn ? 'MENU' : 'ሜኑ';
         document.getElementById('txt-burger').innerText = isEn ? 'Burgers' : 'በርገሮች';
         document.getElementById('txt-juice').innerText = isEn ? 'Fresh Juice' : 'ትኩስ ጁሶች';
-        document.getElementById('vat-text').innerText = isEn ? 'All Price Is inclusive of VAT' : 'ሁሉም ዋጋ የተጨማሪ እሴት ታክስ (VAT) ያካትታል';
         document.getElementById('callText').innerText = isEn ? 'Call To Order' : 'ለመዘዝ ይደውሉ';
         
         const filtered = data.filter(i => i.cat === currentCat);
@@ -184,55 +128,7 @@
     }
 
     function toggleLang() { currentLang = (currentLang === 'en' ? 'am' : 'en'); render(); }
-    function showLogin() { document.getElementById('loginOverlay').style.display = 'flex'; }
-    function hideLogin() { document.getElementById('loginOverlay').style.display = 'none'; }
     
-    function handleLogin() {
-        if(document.getElementById('userInput').value === "admin" && document.getElementById('passInput').value === "dibora") {
-            document.getElementById('adminDashboard').style.display = 'block';
-            hideLogin();
-            refreshAdminTable();
-        } else { alert("Incorrect credentials"); }
-    }
-
-    function refreshAdminTable() {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = "";
-        data.forEach((item, index) => {
-            tbody.innerHTML += `<tr>
-                <td>${item.en}</td>
-                <td>${item.am}</td>
-                <td>${item.price} ETB</td>
-                <td><button onclick="deleteItem(${item.id})" style="color:red; background:none; border:none;">Delete</button></td>
-            </tr>`;
-        });
-    }
-
-    function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
-    function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
-
-    function submitNewItem() {
-        data.push({
-            id: Date.now(),
-            cat: document.getElementById('newCat').value,
-            en: document.getElementById('newEn').value,
-            am: document.getElementById('newAm').value,
-            price: document.getElementById('newPrice').value,
-            img: ''
-        });
-        closeAddModal();
-        refreshAdminTable();
-        render();
-    }
-
-    function deleteItem(id) {
-        data = data.filter(i => i.id !== id);
-        refreshAdminTable();
-        render();
-    }
-
-    function closeAdmin() { document.getElementById('adminDashboard').style.display = 'none'; }
-
     render();
 </script>
 </body>
