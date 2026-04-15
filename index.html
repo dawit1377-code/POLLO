@@ -6,88 +6,84 @@
     <title>Dibora Juice & Burger Menu</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
     
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
     <style>
-        /* BRAND COLORS UPDATED TO ORANGE & GREEN */
         :root { 
-            --p-orange: #FF8C00;    /* Vibrant Orange */
-            --dark-green: #228B22;  /* Forest Green */
+            --p-orange: #FF8C00;    
+            --dark-green: #228B22;  
             --bg: #ffffff; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { overflow-x: hidden; width: 100%; height: 100%; overscroll-behavior-y: contain; }
         body { background: var(--bg); color: #333; font-family: 'Poppins', sans-serif; padding-bottom: 80px; }
         
-        /* Attractive Gradient Header */
-        .header { background: linear-gradient(135deg, var(--p-orange) 0%, var(--dark-green) 100%); color: white; padding: 5px 10px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 90px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { 
+            background: linear-gradient(135deg, var(--p-orange) 0%, var(--dark-green) 100%); 
+            color: white; padding: 5px 15px; display: flex; justify-content: space-between; 
+            align-items: center; position: sticky; top: 0; z-index: 1000; height: 100px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
         
-        .hotel-brand { text-align: center; flex-grow: 1; min-width: 200px; }
-        .hotel-brand h1 { font-family: 'Playfair Display', serif; font-size: 20px; line-height: 1; text-transform: uppercase; letter-spacing: 1px; }
-        .hotel-brand span { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #fff; display: block; margin-top: 2px; }
-        .vat-main { font-size: 11px; color: #fff; opacity: 0.9; font-style: italic; display: block; margin-top: 4px; white-space: nowrap; width: 100%; }
-        .menu-icon { font-size: 24px; cursor: pointer; color: white; width: 40px; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: white; }
+
+        .hotel-brand { text-align: center; flex-grow: 1; }
+        .hotel-brand h1 { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.1; text-transform: uppercase; }
+        .hotel-brand span { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #fff; display: block; }
         
-        .nav-bar { display: flex; overflow-x: auto; padding: 15px 5px; background: #fff; position: sticky; top: 90px; z-index: 900; border-bottom: 2px solid var(--p-orange); }
-        .nav-item { text-align: center; min-width: 150px; opacity: 0.5; transition: 0.2s; cursor: pointer; }
-        .nav-item.active { opacity: 1; transform: scale(1.05); color: var(--dark-green); }
-        .nav-item img { width: 113px; height: 113px; border-radius: 50%; display: block; margin: 0 auto 8px; border: 3px solid #f0f0f0; object-fit: cover; transition: border-color 0.3s; }
-        .nav-item.active img { border-color: var(--p-orange); }
+        .header-right { height: 75px; width: 75px; display: flex; align-items: center; justify-content: center; }
+        .header-logo { max-height: 100%; max-width: 100%; object-fit: contain; }
+
+        .nav-bar { display: flex; overflow-x: auto; padding: 15px 5px; background: #fff; position: sticky; top: 100px; z-index: 900; border-bottom: 2px solid var(--p-orange); }
+        .nav-item { text-align: center; min-width: 140px; opacity: 0.5; transition: 0.2s; cursor: pointer; }
+        .nav-item.active { opacity: 1; color: var(--dark-green); font-weight: bold; }
+        .nav-item img { width: 100px; height: 100px; border-radius: 50%; display: block; margin: 0 auto 8px; border: 3px solid #f0f0f0; object-fit: cover; }
         
         .container { padding: 12px; min-height: 60vh; }
         .card { display: flex; align-items: center; background: white; border-radius: 15px; margin-bottom: 15px; padding: 12px; border: 1px solid #f2f2f2; box-shadow: 0 3px 10px rgba(0,0,0,0.04); }
-        .food-img { width: 138px; height: 138px; border-radius: 12px; object-fit: cover; margin-right: 15px; background: #eee; }
+        .food-img { width: 110px; height: 110px; border-radius: 12px; object-fit: cover; margin-right: 15px; background: #eee; }
         .info .title { font-size: 18px; font-weight: 600; color: var(--dark-green); font-family: 'Noto Sans Ethiopic', sans-serif; }
-        .info .ingred { font-size: 12px; color: #777; font-style: italic; margin-top: 2px; font-family: 'Noto Sans Ethiopic', sans-serif; }
         .info .price { font-size: 17px; font-weight: 700; color: var(--p-orange); margin-top: 5px; }
         
-        /* CALL TO ORDER BUTTON */
-        .call-order-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--p-orange); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 2000; display: flex; align-items: center; gap: 10px; font-size: 16px; min-width: 200px; justify-content: center; border: 2px solid white; }
-
         #adminDashboard { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:3000; padding:10px; overflow-y: scroll; }
-        .action-btn { flex: 1; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; }
-        .table-wrapper { width: 100%; overflow-x: auto; border: 1px solid #eee; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; min-width: 900px; font-size: 13px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .hidden-row { background: #f9f9f9; opacity: 0.6; }
         .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:4000; align-items:center; justify-content:center; }
         .modal { background:white; padding:20px; border-radius:15px; width:90%; max-width:400px; }
         input, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 6px; }
+        .call-order-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--p-orange); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; display: flex; align-items: center; gap: 10px; }
     </style>
 </head>
 <body>
 
 <header class="header">
-    <div class="menu-icon" onclick="showLogin()">☰</div>
+    <div class="header-left">
+        <div class="menu-icon" onclick="showLogin()">☰</div>
+        <button onclick="toggleLang()" style="border:none; background:white; color:var(--p-orange); padding:5px 8px; border-radius:15px; font-size:10px; font-weight:bold;">EN/አማ</button>
+    </div>
+    
     <div class="hotel-brand">
         <h1 id="displayHotelName">Dibora Juice & Burger</h1>
         <span id="menu-label">MENU</span>
-        <span class="vat-main" id="vat-text">All Price Is inclusive of VAT</span>
     </div>
-    <button onclick="toggleLang()" style="border:none; background:white; color:var(--p-orange); padding:5px 8px; border-radius:15px; font-size:11px; font-weight:bold; min-width:60px;">EN/አማ</button>
+
+    <div class="header-right">
+        <img src="logo.png" class="header-logo" alt="Logo">
+    </div>
 </header>
 
 <nav class="nav-bar">
-    <div class="nav-item active" id="cat-breakfast" onclick="changeCat('breakfast')">
-        <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=300&auto=format&fit=crop">
-        <span id="txt-break">Breakfast</span>
+    <div class="nav-item active" id="cat-burger" onclick="changeCat('burger')">
+        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300">
+        <span id="txt-burger">Burgers</span>
     </div>
-    <div class="nav-item" id="cat-lunchdinner" onclick="changeCat('lunchdinner')">
-        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=300&auto=format&fit=crop">
-        <span id="txt-lunch">Lunch/Dinner</span>
-    </div>
-    <div class="nav-item" id="cat-beverages" onclick="changeCat('beverages')">
-        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=300&auto=format&fit=crop">
-        <span id="txt-bev">Beverages</span>
+    <div class="nav-item" id="cat-juice" onclick="changeCat('juice')">
+        <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=300">
+        <span id="txt-juice">Fresh Juice</span>
     </div>
 </nav>
 
 <div class="container" id="menuListing">
-    <p style="text-align:center; margin-top:50px; color:#999;">Loading Menu...</p>
+    <p style="text-align:center; margin-top:50px; color:gray;">Loading Menu...</p>
 </div>
 
-<a href="tel:+251954954591" class="call-order-btn" id="callBtn">
+<a href="tel:+251954954591" class="call-order-btn">
     📞 <span id="callText">Call To Order</span>
 </a>
 
@@ -96,30 +92,17 @@
         <h3>DIBORA MANAGER</h3>
         <button onclick="closeAdmin()" style="color:white; border:none; background:none; font-size:30px;">×</button>
     </div>
-    <div style="display:flex; gap:5px; margin-top:15px;">
-        <button class="action-btn" style="background:#27ae60" onclick="openAddModal()">➕ ADD</button>
-        <button class="action-btn" style="background:#2980b9" onclick="toggleMoveMode()">🔄 MOVE</button>
-        <button class="action-btn" style="background:#f39c12" onclick="toggleHideMode()">👁️ HIDE/SHOW</button>
-        <button class="action-btn" style="background:#c0392b" onclick="toggleDeleteMode()">🗑️ DELETE</button>
-    </div>
-    <div class="table-wrapper">
-        <table>
-            <thead><tr><th>EN Name</th><th>AM Name</th><th>Ingredients</th><th>Price</th><th>Photo</th><th id="actionHeader" style="display:none">Action</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
-    <button onclick="saveToCloud()" style="width:100%; padding:20px; background:#27ae60; color:white; border:none; border-radius:10px; margin-top:20px; font-weight:bold;">💾 SAVE & SYNC ALL DEVICES</button>
+    <button onclick="openAddModal()" style="width:100%; padding:15px; background:#27ae60; color:white; border:none; border-radius:8px; margin-top:20px; font-weight:bold;">➕ ADD NEW ITEM</button>
+    <p style="text-align:center; color:gray; font-size:12px; margin-top:10px;">Connected to Google Sheets</p>
 </div>
 
 <div id="addModal" class="overlay"><div class="modal">
     <h3>New Item</h3>
-    <select id="newCat"><option value="breakfast">Breakfast</option><option value="lunchdinner">Lunch/Dinner</option><option value="beverages">Beverages</option></select>
+    <select id="newCat"><option value="burger">Burgers</option><option value="juice">Juice</option></select>
     <input type="text" id="newEn" placeholder="English Name">
     <input type="text" id="newAm" placeholder="Amharic Name">
-    <input type="text" id="newIng" placeholder="Ingredients">
     <input type="number" id="newPrice" placeholder="Price">
-    <input type="file" onchange="processFile(this)">
-    <button onclick="submitNewItem()" style="width:100%; padding:15px; background:#27ae60; color:white; border:none; border-radius:8px; margin-top:10px;">ADD ITEM</button>
+    <button id="saveBtn" onclick="submitNewItem()" style="width:100%; padding:15px; background:#27ae60; color:white; border:none; border-radius:8px; margin-top:10px;">SAVE TO SHEET</button>
     <button onclick="closeAddModal()" style="width:100%; border:none; background:none; color:red; margin-top:10px;">Cancel</button>
 </div></div>
 
@@ -132,22 +115,20 @@
 </div></div>
 
 <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDhV9y3R77R_4W2pZMOngCgZICyX45B_Ug",
-      authDomain: "sgs-menu.firebaseapp.com",
-      projectId: "sgs-menu",
-      databaseURL: "https://sgs-menu-default-rtdb.firebaseio.com",
-      storageBucket: "sgs-menu.firebasestorage.app"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbzniVbkbM-9eulnlD0WuAJuur_-UAvqrYAIItTyLlzCLiUgDTIAaL7Jk7M_SOOB-giLQg/exec";
 
-    let currentLang = 'en', currentCat = 'breakfast', adminMode = 'none', data = [], tempImgBase64 = "";
+    let currentLang = 'en', currentCat = 'burger', data = [];
 
-    db.ref('menuData').on('value', (snap) => {
-        data = snap.val() || [];
-        render();
-    });
+    async function fetchMenu() {
+        try {
+            const response = await fetch(SHEET_URL);
+            data = await response.json();
+            render();
+        } catch (e) { 
+            console.error("Error loading sheet", e);
+            document.getElementById('menuListing').innerHTML = "<p style='text-align:center; color:red;'>Check Google Script Deployment</p>";
+        }
+    }
 
     function render() {
         const list = document.getElementById('menuListing');
@@ -155,30 +136,63 @@
         const isEn = currentLang === 'en';
         
         document.getElementById('displayHotelName').innerText = isEn ? 'Dibora Juice & Burger' : 'ዲቦራ ጁስ እና በርገር';
-        document.getElementById('menu-label').innerText = isEn ? 'MENU' : 'ሜኑ';
-        document.getElementById('txt-break').innerText = isEn ? 'Breakfast' : 'ቁርስ';
-        document.getElementById('txt-lunch').innerText = isEn ? 'Lunch/Dinner' : 'ምሳ እና እራት';
-        document.getElementById('txt-bev').innerText = isEn ? 'Beverages' : 'መጠጦች';
-        document.getElementById('vat-text').innerText = isEn ? 'All Price Is inclusive of VAT' : 'ሁሉም ዋጋ የተጨማሪ እሴት ታክስ (VAT) ያካትታል';
         document.getElementById('callText').innerText = isEn ? 'Call To Order' : 'ለመዘዝ ይደውሉ';
         
-        const filtered = data.filter(i => i.cat === currentCat && !i.hidden);
-        
+        const filtered = data.filter(i => i.cat === currentCat);
         if(filtered.length === 0) {
-            list.innerHTML = `<p style='text-align:center; padding-top:40px; color:#aaa;'>${isEn ? 'Category is empty.' : 'በዚህ ክፍል ምንም ዝርዝር የለም::'}</p>`;
-            return;
+            list.innerHTML = "<p style='text-align:center; color:gray; margin-top:30px;'>No items found.</p>";
         }
 
         filtered.forEach(item => {
-            list.innerHTML += `<div class="card">
-                <img src="${item.img || 'https://via.placeholder.com/150'}" class="food-img">
-                <div class="info">
-                    <div class="title">${isEn ? item.en : item.am}</div>
-                    <div class="ingred">${item.ing || ''}</div>
-                    <div class="price">${item.price} ETB</div>
-                </div>
-            </div>`;
+            list.innerHTML += `
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" class="food-img">
+                    <div class="info">
+                        <div class="title">${isEn ? item.en : item.am}</div>
+                        <div class="price">${item.price} ETB</div>
+                    </div>
+                </div>`;
         });
+    }
+
+    async function submitNewItem() {
+        const btn = document.getElementById('saveBtn');
+        const originalText = btn.innerText;
+        btn.innerText = "Syncing...";
+        btn.disabled = true;
+
+        const newItem = {
+            id: Date.now(),
+            cat: document.getElementById('newCat').value,
+            en: document.getElementById('newEn').value,
+            am: document.getElementById('newAm').value,
+            price: document.getElementById('newPrice').value
+        };
+
+        try {
+            await fetch(SHEET_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newItem)
+            });
+            
+            alert("Sent to Google Sheets! Note: It may take a moment to appear.");
+            closeAddModal();
+            fetchMenu();
+        } catch (e) {
+            alert("Error saving data.");
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    function handleLogin() {
+        if(document.getElementById('userInput').value === "admin" && document.getElementById('passInput').value === "dibora") {
+            document.getElementById('adminDashboard').style.display = 'block';
+            hideLogin();
+        } else { alert("Access Denied"); }
     }
 
     function changeCat(c) {
@@ -190,89 +204,13 @@
 
     function toggleLang() { currentLang = (currentLang === 'en' ? 'am' : 'en'); render(); }
     function showLogin() { document.getElementById('loginOverlay').style.display = 'flex'; }
-    function hideLogin() { 
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('userInput').value = "";
-        document.getElementById('passInput').value = "";
-    }
-    
-    function handleLogin() {
-        // UPDATED CREDENTIALS: admin / dibora
-        if(document.getElementById('userInput').value === "admin" && document.getElementById('passInput').value === "dibora") {
-            document.getElementById('adminDashboard').style.display = 'block';
-            hideLogin(); refreshAdminTable();
-        } else { alert("Incorrect credentials"); }
-    }
-
-    function refreshAdminTable() {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = "";
-        document.getElementById('actionHeader').style.display = (adminMode === 'none' ? 'none' : 'table-cell');
-
-        data.forEach((item, index) => {
-            let action = "";
-            if(adminMode === 'delete') action = `<button onclick="deleteItem(${item.id})" style="background:red; color:white; border:none; padding:5px; border-radius:4px;">Del</button>`;
-            if(adminMode === 'move') action = `<select onchange="moveItem(${item.id}, this.value)"><option>Move...</option><option value="breakfast">Breakfast</option><option value="lunchdinner">Lunch</option><option value="beverages">Beverages</option></select>`;
-            if(adminMode === 'hide') action = `<button onclick="toggleHideItem(${index})" style="background:#555; color:white; border:none; padding:5px; border-radius:4px;">${item.hidden ? 'Restore' : 'Hide'}</button>`;
-
-            tbody.innerHTML += `<tr class="${item.hidden ? 'hidden-row' : ''}">
-                <td><input value="${item.en}" onchange="data[${index}].en=this.value" style="width:100%"></td>
-                <td><input value="${item.am}" onchange="data[${index}].am=this.value" style="width:100%"></td>
-                <td><input value="${item.ing || ''}" onchange="data[${index}].ing=this.value" style="width:100%"></td>
-                <td><input type="number" value="${item.price}" onchange="data[${index}].price=this.value" style="width:100%"></td>
-                <td>
-                    <img src="${item.img || 'https://via.placeholder.com/150'}" style="width:50px; height:50px; object-fit:cover; border-radius:4px; display:block; margin-bottom:5px;">
-                    <input type="file" id="file-${index}" style="display:none" onchange="updateItemImage(${index}, this)">
-                    <button onclick="document.getElementById('file-${index}').click()" style="font-size:10px; padding:2px; cursor:pointer;">Change Photo</button>
-                </td>
-                <td style="display:${adminMode === 'none' ? 'none' : 'table-cell'}">${action}</td>
-            </tr>`;
-        });
-    }
-
-    function toggleDeleteMode() { adminMode = (adminMode === 'delete' ? 'none' : 'delete'); refreshAdminTable(); }
-    function toggleMoveMode() { adminMode = (adminMode === 'move' ? 'none' : 'move'); refreshAdminTable(); }
-    function toggleHideMode() { adminMode = (adminMode === 'hide' ? 'none' : 'hide'); refreshAdminTable(); }
-    
-    function deleteItem(id) { data = data.filter(i => i.id !== id); refreshAdminTable(); }
-    function moveItem(id, cat) { const item = data.find(i => i.id === id); if(item && cat !== "Move...") { item.cat = cat; refreshAdminTable(); } }
-    
-    function toggleHideItem(index) {
-        data[index].hidden = !data[index].hidden;
-        refreshAdminTable();
-    }
-
-    function updateItemImage(index, input) {
-        const reader = new FileReader();
-        reader.onload = (e) => { 
-            data[index].img = e.target.result; 
-            refreshAdminTable();
-        };
-        if(input.files[0]) reader.readAsDataURL(input.files[0]);
-    }
-
-    function processFile(input) {
-        const reader = new FileReader();
-        reader.onload = (e) => { tempImgBase64 = e.target.result; };
-        if(input.files[0]) reader.readAsDataURL(input.files[0]);
-    }
-
-    function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
-    function closeAddModal() { document.getElementById('addModal').style.display = 'none'; tempImgBase64 = ""; }
-
-    function submitNewItem() {
-        data.push({ id: Date.now(), cat: document.getElementById('newCat').value, en: document.getElementById('newEn').value, am: document.getElementById('newAm').value, ing: document.getElementById('newIng').value, price: document.getElementById('newPrice').value, img: tempImgBase64, hidden: false });
-        closeAddModal(); refreshAdminTable();
-    }
-
-    function saveToCloud() {
-        db.ref('menuData').set(data).then(() => {
-            alert("Dibora Menu Cloud Sync Complete!");
-            document.getElementById('adminDashboard').style.display = 'none';
-        }).catch(err => alert("Error: " + err.message));
-    }
-
+    function hideLogin() { document.getElementById('loginOverlay').style.display = 'none'; }
     function closeAdmin() { document.getElementById('adminDashboard').style.display = 'none'; }
+    function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+    function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+
+    // Start
+    fetchMenu();
 </script>
 </body>
 </html>
