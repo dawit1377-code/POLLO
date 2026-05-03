@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MASTER MENU PROFESSIONAL</title>
+    <title>DIBORA BURGER</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
@@ -13,8 +13,8 @@
         :root {
             --google-sheet-url: "https://script.google.com/macros/s/AKfycbwRn-MSEXk-ZCUKcE50wj4xUnvH17FtddoBxL8f1YgednJYnzuRPP-LFEfZaRrqATJ3/exec";
             
-/* Hotel Name Parts */
-            --hotel-en-1: "POLLO";
+            /* Hotel Name Parts */
+           --hotel-en-1: "POLLO";
             --hotel-en-2: "FOOD & ";
             --hotel-en-3: "COFFEE"; 
             
@@ -35,8 +35,8 @@
             --ing-color: #4A0000;
             --brand-primary: #E56717;
             --phone-number: "+251954954591";
-            --admin-user: "admin";
-            --admin-pass: "212121";
+            --admin-user: "pollo";
+            --admin-pass: "00000";
         }
 
         /* --- UI CORE --- */
@@ -77,7 +77,6 @@
 
         .call-order-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: var(--call-btn-color); color: white; padding: 16px 35px; border-radius: 50px; text-decoration: none; z-index: 2000; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 
-        /* ADMIN DASHBOARD */
         #adminDashboard { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:3000; padding:15px; overflow-y: auto; }
         .admin-section { border: 1px solid #ddd; padding: 15px; border-radius: 10px; margin-bottom: 25px; background: #fafafa; }
         .btn { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; text-align: center; }
@@ -93,22 +92,18 @@
 
 <div id="pageLoader">
     <div class="spinner"></div>
-    <p style="margin-top:10px; font-size:12px; font-weight:600; color:var(--header-bg)">Connecting...</p>
-    <button id="bypassBtn" onclick="APP.hideLoader()" style="margin-top:20px; display:none; background:none; border:1px solid #ccc; padding:5px 10px; border-radius:5px; font-size:10px;">Enter Offline</button>
+    <p id="loadText" style="margin-top:10px; font-size:12px; font-weight:600; color:var(--header-bg)">Connecting... 0%</p>
 </div>
 
 <header class="header">
     <div onclick="APP.showLogin(event)" style="cursor:pointer; font-size:28px; padding:10px; color:white;">☰</div>
-    
     <div id="logoContainer" style="display: flex; align-items: center; justify-content: center;">
         <img src="logo.jpg" class="logo-img" alt="Logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex'">
         <div id="logoFallback" style="display:none; height:70px; width:70px; background: rgba(255,255,255,0.1); border-radius: 50%; align-items: center; justify-content: center; font-size: 30px; margin-right: 10px; border: 2px dashed rgba(255,255,255,0.3);">🍔</div>
     </div>
-
     <div class="header-center-area">
         <h1 id="mainTitle"><span class="w1" id="w1"></span> <span class="w2" id="w2"></span> <span class="w3" id="w3"></span></h1>
         <div id="subTitle" style="font-size:12px; font-weight:bold; letter-spacing:3px; color:white;">MENU</div>
-        <div id="vatNote" style="font-size:10px; opacity:0.8; margin-top:4px; color:white;"></div>
     </div>
     <button onclick="APP.toggleLang()" style="background:white; color:var(--header-bg); border:none; padding:10px 15px; border-radius:20px; font-weight:bold;">EN/አማ</button>
 </header>
@@ -130,7 +125,7 @@
 
 <div id="adminDashboard">
     <div style="display:flex; justify-content:space-between; align-items:center; background:var(--header-bg); padding:20px; color:white; border-radius:12px; margin-bottom: 20px;">
-        <h3>SGS MANAGER</h3>
+        <h3>DIBORA MANAGER</h3>
         <button onclick="APP.closeAdmin()" style="color:white; border:none; background:none; font-size:40px;">&times;</button>
     </div>
     <div class="admin-section">
@@ -166,20 +161,31 @@
         data: [], cats: [], lang: 'en', activeCat: '', imgTmp: '', editId: null,
 
         init: async function() {
-            setTimeout(() => { document.getElementById('bypassBtn').style.display = 'block'; }, 4000);
+            const loadTxt = document.getElementById('loadText');
+            loadTxt.innerText = "Connecting... 15%";
+            
             const root = getComputedStyle(document.documentElement);
             const sheetUrl = root.getPropertyValue('--google-sheet-url').trim().replace(/"/g, '');
             document.getElementById('callLink').href = "tel:" + root.getPropertyValue('--phone-number').trim().replace(/"/g, '');
             
             try {
-                const r = await fetch(`${sheetUrl}?t=${Date.now()}`);
+                loadTxt.innerText = "Connecting... 40%";
+                // High Speed Fix: Removed ?t= timestamp to allow browser caching
+                const r = await fetch(sheetUrl); 
+                
+                loadTxt.innerText = "Connecting... 75%";
                 const j = await r.json();
+                
+                loadTxt.innerText = "Connecting... 95%";
                 this.data = j.items || [];
                 this.cats = j.cats || [];
                 if(this.cats.length > 0) this.activeCat = this.cats[0].id;
+                
                 this.hideLoader();
-                this.render();
-            } catch(e) { this.hideLoader(); }
+            } catch(e) { 
+                console.error(e);
+                this.hideLoader(); 
+            }
         },
 
         hideLoader: function() { 
@@ -192,7 +198,6 @@
             const isEn = this.lang === 'en';
             const root = getComputedStyle(document.documentElement);
             
-            // Build Full Hotel Names
             const hEn = [
                 root.getPropertyValue('--hotel-en-1').trim().replace(/"/g, ''),
                 root.getPropertyValue('--hotel-en-2').trim().replace(/"/g, ''),
@@ -209,7 +214,6 @@
             document.getElementById('w2').innerText = isEn ? root.getPropertyValue('--hotel-en-2').trim().replace(/"/g, '') : root.getPropertyValue('--hotel-am-2').trim().replace(/"/g, '');
             document.getElementById('w3').innerText = isEn ? root.getPropertyValue('--hotel-en-3').trim().replace(/"/g, '') : root.getPropertyValue('--hotel-am-3').trim().replace(/"/g, '');
             
-            document.getElementById('vatNote').innerText = isEn ? "All prices include VAT" : "ሁሉም ዋጋዎች ቫትን ያካትታሉ";
             document.getElementById('callBtnText').innerText = isEn ? "Call To Order" : "ለማዘዝ ይደውሉ";
             document.getElementById('loginWelcomeText').innerText = isEn ? `Welcome to "${hEn}"` : `እንኳን ወደ "${hAm}" በደህና መጡ`;
 
